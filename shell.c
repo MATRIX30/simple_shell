@@ -110,7 +110,6 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			* - wait for child process to finish continue
 			*   infinte looping
 			*/
-			printf("waiting for child\n");
 			wait(&status);
 		}
 
