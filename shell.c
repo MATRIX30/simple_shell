@@ -52,7 +52,8 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	/* infinite loop to run shell */
 	while (1)
 	{
-		printf("($) ");
+		if (isatty(STDIN_FILENO) == 1)
+			_print("($) ");
 		char_read = getline(&lineptr, &n, stdin);
 		/* on getline failure return -1 */
 		if (char_read == -1)
@@ -66,8 +67,10 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			*
 			* }
 			*/
-			printf("\n");
-			_exit(1);
+			
+			if (isatty(STDIN_FILENO) == 1)
+				_putchar('\n');
+			exit(0);
 		}
 
 		/**

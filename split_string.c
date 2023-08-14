@@ -62,5 +62,6 @@ char **split_string(char *str, char *del)
 		strcpy(buffer[j], token);
 	}
 	buffer[j] = NULL;
+	free(str_cpy);
 	return (buffer);
 }
