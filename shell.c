@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdio.h>
 /**
 * main - main entry point to our shell program
 * @ac: argument count
@@ -59,17 +60,11 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 		if (char_read == -1)
 		{
 			/* test if EOF(ctrl + D) has been encountered */
-			/**
-			*if (feof(stdin))
-			* {
-			*	printf("\n");
-			*	_exit(0);
-			*
-			* }
-			*/
-			
 			if (isatty(STDIN_FILENO) == 1)
+			{
 				_putchar('\n');
+			}
+			free(lineptr);
 			exit(0);
 		}
 
@@ -77,7 +72,14 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 		* Generate commands table from lineptr
 		* with the help of strtok tokenizing function
 		*/
+	
 		command_table = split_string(lineptr, del);
+
+		/* handling a Null command table */
+		if (command_table == NULL)
+		{
+			continue;
+		}
 
 		/**
 		* 2) executor engine: This component makes use of
@@ -102,9 +104,12 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			 */
 			if (execve(command_table[0], command_table, NULL) == -1)
 			{
+				/*free_array(command_table);*/
 				perror("./shell");
 				exit(EXIT_FAILURE);
 			}
+			/*free(lineptr);*/
+			/*free_array(command_table);*/
 		}
 		else
 		{
@@ -114,9 +119,11 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			*   infinte looping
 			*/
 			wait(&status);
+			
 		}
 
 	}
 	free(lineptr);
+	free_array(command_table);
 	return (0);
 }

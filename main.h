@@ -10,5 +10,6 @@
 int _putchar(char c);
 int _print(char *str);
 char **split_string(char *str, char *del);
+void free_array(char **arr);
 #define BUFFER_SIZE 1024
 #endif
