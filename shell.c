@@ -6,8 +6,8 @@
 * @av: array of  string argumements passed to the shell
 * Return: 0 on success 1 otherwise
 */
-int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av);
-int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
+int main(int ac, char **av, char **env);
+int main(int  ac, char **av, char **env)
 {
 	/**
 	* Component based design of Shell
@@ -32,6 +32,8 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	 *  - Compilation flag: gcc -Wall -Werror -Wextra -pedantic
 	 *    -std=gnu89 *.c -o hsh
 	 */
+
+	extern int errno;
 	char *lineptr = NULL;
 	char **command_table;
 	char *del = " \n";
@@ -40,6 +42,8 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	pid_t child;
 	/*pid_t father;*/
 	int status;
+	struct stat s;
+	/*char *dirs = _getenv("PATH");*/
 
 	/**
 	* 1) Lexical Analyzer: get commands from both interactive
@@ -49,6 +53,22 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	/**
 	* - Interactive shell design
 	*/
+
+	/** handling entry of command from file **/
+	if (ac > 1)
+	{
+		/* file_handler code here*/
+		if(file_handler(av[1]) != 1)
+		{
+			_print("Usage: simple_shell [file name]\n");
+			/*perror("File Handler");*/
+		}
+		exit(errno);
+	}
+
+
+
+
 
 	/* infinite loop to run shell */
 	while (1)
@@ -65,7 +85,8 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 				_putchar('\n');
 			}
 			free(lineptr);
-			exit(0);
+			/*exit(0);*/
+			exit(errno);
 		}
 
 		/**
@@ -74,6 +95,9 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 		*/
 	
 		command_table = split_string(lineptr, del);
+		
+		/*free(lineptr);*/
+	
 
 		/* handling a Null command table */
 		if (command_table == NULL)
@@ -88,13 +112,23 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 		*    execute each command
 		*/
 
+		/** Handle paths here by verifying if command exist in paths then execute **/
+		if (stat(command_table[0],&s) != 0)
+		{
+			_print("File Not found -- process paths\n");
+			printf("*********%s\n", command_table[0]);
+			/*handle_path(command_table);*/
+			continue;
+		}
+
 		/*creat a seperate child process*/
 		child = fork();
 		if (child == -1)
 		{
 			/* in case of failure in creating child process*/
 			perror("fork");
-			exit(EXIT_FAILURE);
+			/*exit(EXIT_FAILURE);*/
+			exit(errno);
 		}
 		if (child == 0)
 		{
@@ -102,11 +136,12 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			 *  task to perform while in child process
 			 *  printf("child process started\n");
 			 */
-			if (execve(command_table[0], command_table, NULL) == -1)
+			if (execve(command_table[0], command_table, env) == -1)
 			{
-				/*free_array(command_table);*/
+				
 				perror("./shell");
-				exit(EXIT_FAILURE);
+				/*exit(EXIT_FAILURE);*/
+				exit(errno);
 			}
 			/*free(lineptr);*/
 			/*free_array(command_table);*/
@@ -119,11 +154,10 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			*   infinte looping
 			*/
 			wait(&status);
-			
 		}
+		/*free(lineptr);*/
+		/*free_array(command_table);*/
 
 	}
-	free(lineptr);
-	free_array(command_table);
 	return (0);
 }
