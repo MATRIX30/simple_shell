@@ -1,12 +1,13 @@
 #include "main.h"
+#include <stdio.h>
 /**
 * main - main entry point to our shell program
 * @ac: argument count
 * @av: array of  string argumements passed to the shell
 * Return: 0 on success 1 otherwise
 */
-int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av);
-int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
+int main(int ac, char **av, char **env);
+int main(int  ac, char **av, char **env)
 {
 	/**
 	* Component based design of Shell
@@ -31,6 +32,8 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	 *  - Compilation flag: gcc -Wall -Werror -Wextra -pedantic
 	 *    -std=gnu89 *.c -o hsh
 	 */
+
+	extern int errno;
 	char *lineptr = NULL;
 	char **command_table;
 	char *del = " \n";
@@ -39,6 +42,9 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	pid_t child;
 	/*pid_t father;*/
 	int status;
+	struct stat s;
+	/*char *comment_free_lineptr = NULL;*/
+	/*char *dirs = _getenv("PATH");*/
 
 	/**
 	* 1) Lexical Analyzer: get commands from both interactive
@@ -49,32 +55,82 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	* - Interactive shell design
 	*/
 
+	/** handling entry of command from file **/
+	if (ac > 1)
+	{
+		/* file_handler code here*/
+		if(file_handler(av[1]) != 1)
+		{
+			/*_print("Usage: simple_shell [file name]\n");*/
+			perror("./hsh");
+			exit(2);
+		}
+		exit(EXIT_SUCCESS);
+	}
+
+
+
+
+
 	/* infinite loop to run shell */
 	while (1)
 	{
-		printf("($) ");
+		if (isatty(STDIN_FILENO) == 1)
+			_print("($) ");
 		char_read = getline(&lineptr, &n, stdin);
 		/* on getline failure return -1 */
 		if (char_read == -1)
 		{
 			/* test if EOF(ctrl + D) has been encountered */
-			/**
-			*if (feof(stdin))
-			* {
-			*	printf("\n");
-			*	_exit(0);
-			*
-			* }
-			*/
-			printf("\n");
-			_exit(1);
+			if (isatty(STDIN_FILENO) == 1)
+			{
+				_putchar('\n');
+			}
+			free(lineptr);
+			exit(0);
+			/*exit(errno);*/
 		}
 
+		/**
+		* Handle Buit-ins here
+		* built_ins - function to execute build-in commands
+		* Takes typed commands throught lineptr 
+		* Returns: 1 if successful ie command entered was a 
+		* built-in command and 0 otherwise
+		*/
+
+		if (built_ins(lineptr) == 1)
+		{
+			continue;
+		}
+
+		/**
+		* Handling comments # by spliting commands based on #
+		* and taking just the first part of the string
+		*/
+
+		/*comment_free_lineptr = strdup(lineptr);
+		printf("%s\n",comment_free_lineptr);
+		comment_free_lineptr = strtok(comment_free_lineptr, "#");
+		printf("%s\n",comment_free_lineptr);
+		*/
+
+		lineptr = strtok(lineptr, "#");
 		/**
 		* Generate commands table from lineptr
 		* with the help of strtok tokenizing function
 		*/
+	
 		command_table = split_string(lineptr, del);
+		
+		/*free(lineptr);*/
+	
+
+		/* handling a Null command table */
+		if (command_table == NULL)
+		{
+			continue;
+		}
 
 		/**
 		* 2) executor engine: This component makes use of
@@ -83,6 +139,15 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 		*    execute each command
 		*/
 
+		/** Handle paths here by verifying if command exist in paths then execute **/
+		if (stat(command_table[0],&s) != 0)
+		{
+			_print("File Not found -- process paths\n");
+			printf("*********%s\n", command_table[0]);
+			handle_path(command_table);
+			continue;
+		}
+
 		/*creat a seperate child process*/
 		child = fork();
 		if (child == -1)
@@ -90,6 +155,7 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			/* in case of failure in creating child process*/
 			perror("fork");
 			exit(EXIT_FAILURE);
+			/*exit(errno);*/
 		}
 		if (child == 0)
 		{
@@ -97,11 +163,15 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			 *  task to perform while in child process
 			 *  printf("child process started\n");
 			 */
-			if (execve(command_table[0], command_table, NULL) == -1)
+			if (execve(command_table[0], command_table, env) == -1)
 			{
+				
 				perror("./shell");
 				exit(EXIT_FAILURE);
+				/*exit(errno);*/
 			}
+			/*free(lineptr);*/
+			/*free_array(command_table);*/
 		}
 		else
 		{
@@ -112,8 +182,9 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 			*/
 			wait(&status);
 		}
+		/*free(lineptr);*/
+		/*free_array(command_table);*/
 
 	}
-	free(lineptr);
 	return (0);
 }
