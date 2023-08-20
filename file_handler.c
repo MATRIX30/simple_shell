@@ -29,6 +29,7 @@ int file_handler(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		perror("open");
 		return (0);
 	}
 

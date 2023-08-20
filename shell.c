@@ -43,6 +43,7 @@ int main(int  ac, char **av, char **env)
 	/*pid_t father;*/
 	int status;
 	struct stat s;
+	/*char *comment_free_lineptr = NULL;*/
 	/*char *dirs = _getenv("PATH");*/
 
 	/**
@@ -62,8 +63,9 @@ int main(int  ac, char **av, char **env)
 		{
 			/*_print("Usage: simple_shell [file name]\n");*/
 			perror("./hsh");
+			exit(2);
 		}
-		exit(errno);
+		exit(EXIT_SUCCESS);
 	}
 
 
@@ -103,6 +105,18 @@ int main(int  ac, char **av, char **env)
 		}
 
 		/**
+		* Handling comments # by spliting commands based on #
+		* and taking just the first part of the string
+		*/
+
+		/*comment_free_lineptr = strdup(lineptr);
+		printf("%s\n",comment_free_lineptr);
+		comment_free_lineptr = strtok(comment_free_lineptr, "#");
+		printf("%s\n",comment_free_lineptr);
+		*/
+
+		lineptr = strtok(lineptr, "#");
+		/**
 		* Generate commands table from lineptr
 		* with the help of strtok tokenizing function
 		*/
@@ -130,7 +144,7 @@ int main(int  ac, char **av, char **env)
 		{
 			_print("File Not found -- process paths\n");
 			printf("*********%s\n", command_table[0]);
-			/*handle_path(command_table);*/
+			handle_path(command_table);
 			continue;
 		}
 

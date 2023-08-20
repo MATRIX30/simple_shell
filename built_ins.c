@@ -17,12 +17,19 @@ int built_ins(char *cmd)
 	cmd_cpy = strdup(cmd);
 	token = strtok(cmd_cpy, del);
 
+	if (token == NULL)
+	{
+		return (0);
+	}
 	if (strcmp(token, "exit") == 0)
 	{
 		token = strtok(NULL, del);
 		if (token != NULL)
 		{
 			status = atoi(token);
+			/* implement logic to test token for the folowng*/
+			/* - when token cotains no digits  ie string*/
+			/* - when token is negative */
 			exit(status);
 		}
 		exit(0);
@@ -32,10 +39,9 @@ int built_ins(char *cmd)
 		while (*environ)
 		{
 			_print(*environ);
+			_putchar('\n');
 			environ++;
 		}
-		/* after printing env go to new line*/
-		_putchar('\n');
 		return (1);
 	}
 	return (0);
