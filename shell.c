@@ -60,8 +60,8 @@ int main(int  ac, char **av, char **env)
 		/* file_handler code here*/
 		if(file_handler(av[1]) != 1)
 		{
-			_print("Usage: simple_shell [file name]\n");
-			/*perror("File Handler");*/
+			/*_print("Usage: simple_shell [file name]\n");*/
+			perror("./hsh");
 		}
 		exit(errno);
 	}
@@ -85,8 +85,21 @@ int main(int  ac, char **av, char **env)
 				_putchar('\n');
 			}
 			free(lineptr);
-			/*exit(0);*/
-			exit(errno);
+			exit(0);
+			/*exit(errno);*/
+		}
+
+		/**
+		* Handle Buit-ins here
+		* built_ins - function to execute build-in commands
+		* Takes typed commands throught lineptr 
+		* Returns: 1 if successful ie command entered was a 
+		* built-in command and 0 otherwise
+		*/
+
+		if (built_ins(lineptr) == 1)
+		{
+			continue;
 		}
 
 		/**
@@ -127,8 +140,8 @@ int main(int  ac, char **av, char **env)
 		{
 			/* in case of failure in creating child process*/
 			perror("fork");
-			/*exit(EXIT_FAILURE);*/
-			exit(errno);
+			exit(EXIT_FAILURE);
+			/*exit(errno);*/
 		}
 		if (child == 0)
 		{
@@ -140,8 +153,8 @@ int main(int  ac, char **av, char **env)
 			{
 				
 				perror("./shell");
-				/*exit(EXIT_FAILURE);*/
-				exit(errno);
+				exit(EXIT_FAILURE);
+				/*exit(errno);*/
 			}
 			/*free(lineptr);*/
 			/*free_array(command_table);*/

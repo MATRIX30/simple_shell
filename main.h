@@ -19,5 +19,8 @@ int _print(char *str);
 void free_array(char **arr);
 char *_getenv(const char *name);
 int _strlen(const char *str);
+/* builtin functions */
+int built_ins(char *cmd);
+
 #define BUFFER_SIZE 1024
 #endif

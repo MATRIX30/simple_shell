@@ -9,14 +9,14 @@
 int executor(char **command_table)
 {
 	extern int errno;
-	pid_t parent_id, child_id;
+	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
 
 	char *env[] = {NULL};
 
 	parent_id = getpid();
 
-	printf("%d\n",parent_id);
+	/*printf("%d\n",parent_id);*/
 	/* creating child process */
 	child_id = fork();
 
