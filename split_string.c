@@ -91,6 +91,7 @@ char **split_string(char *str, char *del)
 			}
 			free(buffer);
 			free(str_cpy);
+			break;
 		}
 	}
 	buffer[j] = NULL;

@@ -28,3 +28,33 @@ int _print(char *str)
 	}
 	return (i);
 }
+
+
+/**
+* _putcharerr - function to print a single error character
+* @c: character to be printed
+* Return: number of characters written
+*/
+
+int _putcharerr(char c)
+{
+	return (write(2, &c, 1));
+}
+/**
+* _printerr - function to prints error string based on _putchar
+* @str: string parameter to print
+* Return: number of characters to print
+*/
+
+int _printerr(char *str)
+{
+	int i = 0;
+
+	while (*str != '\0')
+	{
+		_putcharerr(*str);
+		str++;
+		i++;
+	}
+	return (i);
+}
