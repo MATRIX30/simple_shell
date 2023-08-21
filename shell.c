@@ -1,13 +1,15 @@
 #include "main.h"
 #include <stdio.h>
+
+int main(int ac, char **av, char __attribute__((unused)) **env);
+void signal_handler(int __attribute__((unused)) sig);
 /**
 * main - main entry point to our shell program
 * @ac: argument count
 * @av: array of  string argumements passed to the shell
 * Return: 0 on success 1 otherwise
 */
-int main(int ac, char **av, char **env);
-int main(int  ac, char **av, char **env)
+int main(int  ac, char **av, char __attribute__((unused)) **env)
 {
 	/**
 	* Component based design of Shell
@@ -39,10 +41,13 @@ int main(int  ac, char **av, char **env)
 	char *del = " \n";
 	size_t n = 0;
 	ssize_t char_read;
-	pid_t child;
-	/*pid_t father;*/
-	int status;
 	struct stat s;
+/*
+	char * cma_sep = NULL;
+	char * lineptr_cpy = NULL;
+	int count = 0;
+	char **cmd_table = NULL;
+*/
 	/*char *comment_free_lineptr = NULL;*/
 	/*char *dirs = _getenv("PATH");*/
 
@@ -55,19 +60,23 @@ int main(int  ac, char **av, char **env)
 	* - Interactive shell design
 	*/
 
+
+	/* registration of signals */
+	signal(SIGINT, signal_handler);
+
 	/** handling entry of command from file **/
 	if (ac > 1)
 	{
 		/* file_handler code here*/
 		if(file_handler(av[1]) != 1)
 		{
-			/*_print("Usage: simple_shell [file name]\n");*/
-			perror("./hsh");
 			exit(2);
 		}
 		exit(EXIT_SUCCESS);
 	}
 
+	/* register and handle signals here */
+	/*signal(SIGINT, signal_handler);*/
 
 
 
@@ -86,10 +95,51 @@ int main(int  ac, char **av, char **env)
 			{
 				_putchar('\n');
 			}
-			free(lineptr);
+			/*free(lineptr);*/
 			exit(0);
 			/*exit(errno);*/
 		}
+
+		/**
+		* Handling comma seperated commands
+		*/
+
+		/*lineptr_cpy = strdup(lineptr);
+		cma_sep	= strtok(lineptr_cpy, ";");
+
+		while (cma_sep != NULL)
+		{
+			count++;
+			cma_sep = strtok(NULL, ";");
+		}
+		free(lineptr_cpy);
+		if (count >= 2)
+		{
+			lineptr_cpy = strdup(lineptr);
+			cma_sep = strtok(lineptr_cpy, ";");
+
+			while(cma_sep != NULL)
+			{
+				if (built_ins(cma_sep) == 1)
+				{
+					errno = 0;
+				}
+				else
+				{
+					cmd_table = split_string(cma_sep, del);
+					if (executor(cmd_table) == 1)
+					{
+						errno = 0;
+					}
+					else
+					{
+						perror("error");
+						errno = ENOENT;
+					}
+				}
+				cma_sep =strtok(NULL, ";");
+			}
+		}*/
 
 		/**
 		* Handle Buit-ins here
@@ -101,6 +151,7 @@ int main(int  ac, char **av, char **env)
 
 		if (built_ins(lineptr) == 1)
 		{
+			/*free(lineptr);*/
 			continue;
 		}
 
@@ -111,9 +162,7 @@ int main(int  ac, char **av, char **env)
 
 		/*comment_free_lineptr = strdup(lineptr);
 		printf("%s\n",comment_free_lineptr);
-		comment_free_lineptr = strtok(comment_free_lineptr, "#");
-		printf("%s\n",comment_free_lineptr);
-		*/
+		comment_free_lineptr = strtok(comment_free_lineptr, "#");*/
 
 		lineptr = strtok(lineptr, "#");
 		/**
@@ -139,52 +188,34 @@ int main(int  ac, char **av, char **env)
 		*    execute each command
 		*/
 
-		/** Handle paths here by verifying if command exist in paths then execute **/
-		if (stat(command_table[0],&s) != 0)
+		/*verify if executable is in current working directory*/
+		if (stat(command_table[0], &s) == 0)
 		{
-			_print("File Not found -- process paths\n");
-			printf("*********%s\n", command_table[0]);
-			handle_path(command_table);
+			executor(command_table);
 			continue;
 		}
-
-		/*creat a seperate child process*/
-		child = fork();
-		if (child == -1)
+		else if (handle_path(command_table) == 1)
 		{
-			/* in case of failure in creating child process*/
-			perror("fork");
-			exit(EXIT_FAILURE);
-			/*exit(errno);*/
-		}
-		if (child == 0)
-		{
-			/**
-			 *  task to perform while in child process
-			 *  printf("child process started\n");
-			 */
-			if (execve(command_table[0], command_table, env) == -1)
-			{
-				
-				perror("./shell");
-				exit(EXIT_FAILURE);
-				/*exit(errno);*/
-			}
-			/*free(lineptr);*/
-			/*free_array(command_table);*/
+			/* look for executable in paths and execute */
+			continue;
 		}
 		else
 		{
-			/**
-			* task to perform while in parent process
-			* - wait for child process to finish continue
-			*   infinte looping
-			*/
-			wait(&status);
+			errno = ENOENT;
+			perror(command_table[0]);
+			continue;
 		}
-		/*free(lineptr);*/
-		/*free_array(command_table);*/
 
 	}
 	return (0);
+}
+
+/**
+* signal_handler - function to handle signals sent to the prompt
+* @sig: integer value send by signal
+*/
+
+void signal_handler(int __attribute__((unused)) sig)
+{
+	_print("\n($) ");
 }

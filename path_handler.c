@@ -8,9 +8,6 @@
 */
 int handle_path(char **command_table)
 {
-	/* flag_dir checks if dir has already been generated*/
-	/* and prevent further generations on subsiquent calls*/
-	static int flag_dir = 0;
 	const char *paths = _getenv("PATH");
 	char *dir = NULL;
 	char *paths_cpy = NULL;
@@ -34,21 +31,15 @@ int handle_path(char **command_table)
 		paths = _getenv("PATH");
 		flag_dir = 1;
 	}*/
-	printf("hello\n");
-	paths_cpy = strdup(paths);
-	printf("%p\n",(void *)&paths_cpy);
-	printf("%p\n",(void *)&paths);
-	printf("%d\n",flag_dir);
-	
 	if(paths == NULL)
 	{
-		printf("Path is NULL\n");
-		paths =_getenv("PATH");
+		return (0);
 	}
-	printf("%s\n",cur_dir);
+	/*printf("%s\n",cur_dir);*/
+	paths_cpy = strdup(paths);
 	if (paths != NULL)
 	{
-		printf("%s\n",paths);
+		/*printf("%s\n",paths);*/
 		dir = strtok(paths_cpy, del);
 		while(dir != NULL)
 		{
@@ -58,22 +49,28 @@ int handle_path(char **command_table)
 			if (stat(command_table[0], &s) == 0)
 			{
 				/* if the executable is found */
-				printf("Found at %s\n",dir);
+				/*printf("Found at %s\n",dir);*/
+				/* check if it can be access and executed by currrent process using access*/
 				/*executing command */
 				new_cmd = strcat(dir,"/");
 				new_cmd = strcat(new_cmd,command_table[0]);
-				printf("%s\n",new_cmd);
+				/*printf("%s\n",new_cmd);*/
 				chdir(cur_dir);
-				if (execve(new_cmd, command_table, NULL)== -1)
-					printf("something went wrong");
-				break;
+				command_table[0] = new_cmd;
+				/*if (execve(command_table[0], command_table, NULL)== -1)*/
+				if (executor(command_table) != 1)
+				{
+					perror("execution");
+					return (0);
+				}
+				return (1);
 			}
 
 			new_dir = getcwd(new_dir, dir_size);
+			/*printf("cur dir --> %s\n",new_dir);*/
 			dir = strtok(NULL, del);
-			printf("cur dir --> %s\n",new_dir);
 		}
-	}
+	} 
 	chdir(cur_dir);
 	free(paths_cpy);
 	/* change to the original directory before exiting */

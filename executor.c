@@ -33,15 +33,17 @@ int executor(char **command_table)
 		if (execve(command_table[0], command_table, env) == -1)
 		{
 			/* in case of failure */
-			exit(errno);
+			perror(command_table[0]);
+			exit(0);
 		}
 
 	}
 	else
+
 	{
 		/* specify task to perform in parent */
 		wait(&wstatus);
 	}
 
-	return (0);
+	return (1);
 }

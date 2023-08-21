@@ -7,6 +7,7 @@
 */
 int file_handler(char *filename)
 {
+	char *prog_name = _getenv("_");
 	extern int errno;
 	ssize_t fd;
 	ssize_t read_size;
@@ -29,7 +30,12 @@ int file_handler(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("open");
+		_printerr(prog_name);
+		_printerr(": 0: cannot open ");
+		_printerr(filename);
+		_printerr(": No such file\n");
+		free(buffer);
+		/*free(prog_name);*/
 		return (0);
 	}
 

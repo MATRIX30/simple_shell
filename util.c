@@ -6,7 +6,7 @@
 */
 
 /**
-* free_array - free's a character array of strings
+* free_array - free a character array of strings
 * @arr: array of characters 
 */
 
@@ -27,24 +27,24 @@ void free_array(char **arr)
 */
 char *_getenv(const char *name)
 {
-	/* this approach destroyes the *environ with strtok */
-	/* so for better implementation make a copy of environ*/
-	extern char **environ;
-	char *token;
-	char *del = "=";
+	extern char **environ; /* environmental variable*/
 
-	while (*environ)
-	{
-		token = strtok(*environ, del);
-		if (strcmp(token, name) == 0)
-		{
-			token = strtok(NULL, del);
-			return (token);
-		}
-		environ++;
-	}
-	return (NULL);
+	int name_len = _strlen(name); 
+
+    /* loop through the environment variables */
+    while (*environ)
+    {
+        /* compare the name argument with the current variable */
+        if (strncmp(name, *environ, name_len) == 0 && (*environ)[name_len] == '=')
+        {
+            /* return the value after the '=' sign */
+            return ((*environ) + name_len + 1);
+        }
+        environ++; 
+    }
+    return (NULL);
 }
+
 
 /**
 * _strlen - functiont to calculate the length of a string excluding '\0'* @str: strinng whose lenght is to be computed

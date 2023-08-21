@@ -19,6 +19,7 @@ int built_ins(char *cmd)
 
 	if (token == NULL)
 	{
+		free(cmd_cpy);
 		return (0);
 	}
 	if (strcmp(token, "exit") == 0)
@@ -30,6 +31,7 @@ int built_ins(char *cmd)
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
+			errno = 0;
 			exit(status);
 		}
 		exit(0);
@@ -44,5 +46,6 @@ int built_ins(char *cmd)
 		}
 		return (1);
 	}
+	free(cmd_cpy);
 	return (0);
 }
