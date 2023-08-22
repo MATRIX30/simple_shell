@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+int handle_path(char **command_table);
 /**
 * handle_path - this function identifies the path where command is
 * and exeutes command from that path
@@ -16,23 +17,19 @@ int handle_path(char **command_table)
 	/* store current working directory*/
 	size_t dir_size = 0;
 	char *cur_dir = NULL;
-	char *new_dir = NULL;
+	/*char *new_dir = NULL;*/
 	struct stat s;
 	char *new_cmd;
+
 	cur_dir = getcwd(cur_dir, dir_size);
 	/*printf("%s\n",paths);*/
 
 
 	(void)command_table;
 
-	/* we need to make a copy of dir cause strtok destroys*/
-	/*if (flag_dir == 0)
+	if (paths == NULL)
 	{
-		paths = _getenv("PATH");
-		flag_dir = 1;
-	}*/
-	if(paths == NULL)
-	{
+		free(cur_dir);
 		return (0);
 	}
 	/*printf("%s\n",cur_dir);*/
@@ -41,7 +38,7 @@ int handle_path(char **command_table)
 	{
 		/*printf("%s\n",paths);*/
 		dir = strtok(paths_cpy, del);
-		while(dir != NULL)
+		while (dir != NULL)
 		{
 			/*printf("%s\n",dir);*/
 			chdir(dir);
@@ -50,10 +47,10 @@ int handle_path(char **command_table)
 			{
 				/* if the executable is found */
 				/*printf("Found at %s\n",dir);*/
-				/* check if it can be access and executed by currrent process using access*/
+				/* check if it can be accessed */
 				/*executing command */
-				new_cmd = strcat(dir,"/");
-				new_cmd = strcat(new_cmd,command_table[0]);
+				new_cmd = _strcat(dir, "/");
+				new_cmd = _strcat(new_cmd, command_table[0]);
 				/*printf("%s\n",new_cmd);*/
 				chdir(cur_dir);
 				command_table[0] = new_cmd;
@@ -61,18 +58,25 @@ int handle_path(char **command_table)
 				if (executor(command_table) != 1)
 				{
 					perror("execution");
+					free(cur_dir);
+					free(paths_cpy);
 					return (0);
 				}
+				
+				free(cur_dir);
+				free(paths_cpy);
+				
 				return (1);
 			}
 
-			new_dir = getcwd(new_dir, dir_size);
+			/*new_dir = getcwd(new_dir, dir_size);*/
 			/*printf("cur dir --> %s\n",new_dir);*/
 			dir = strtok(NULL, del);
 		}
 	} 
 	chdir(cur_dir);
 	free(paths_cpy);
+	free(cur_dir);
 	/* change to the original directory before exiting */
 	return (0);
 }
