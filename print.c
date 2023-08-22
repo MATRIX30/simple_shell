@@ -20,6 +20,12 @@ int _print(char *str)
 {
 	int i = 0;
 
+	if (str == NULL)
+	{
+		/* Handling of Null pointer */
+		return (1);
+	}
+
 	while (*str != '\0')
 	{
 		_putchar(*str);

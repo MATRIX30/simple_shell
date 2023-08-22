@@ -1,5 +1,5 @@
 #include "main.h"
-#include <stdio.h>
+
 int handle_path(char **command_table);
 /**
 * handle_path - this function identifies the path where command is
@@ -29,7 +29,7 @@ int handle_path(char **command_table)
 
 	if (paths == NULL)
 	{
-		free(cur_dir);
+		/*free(cur_dir);*/
 		return (0);
 	}
 	/*printf("%s\n",cur_dir);*/
@@ -76,7 +76,7 @@ int handle_path(char **command_table)
 	} 
 	chdir(cur_dir);
 	free(paths_cpy);
-	free(cur_dir);
+	/*free(cur_dir);*/
 	/* change to the original directory before exiting */
 	return (0);
 }

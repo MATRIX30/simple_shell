@@ -43,7 +43,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	size_t n = 0;
 	ssize_t char_read;
 	struct stat s;
-
+	int a = 0;
 
 	/*char *comment_free_lineptr = NULL;*/
 	/*char *dirs = _getenv("PATH");*/
@@ -106,10 +106,8 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		* Returns: 1 if successful ie command entered was a 
 		* built-in command and 0 otherwise
 		*/
-		printf("hello\n");
 		if (built_ins(lineptr) == 1)
 		{
-			printf("hel\n");
 			continue;
 		}
 
@@ -149,7 +147,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		/*verify if executable is in current working directory*/
 		if (stat(command_table[0], &s) == 0)
 		{
-			executor(command_table);
+			a = executor(command_table);
 			continue;
 		}
 		else if (handle_path(command_table) == 1)
@@ -160,19 +158,19 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		else
 		{
 		     /*	errno = ENOENT;*/
-		     	_print(_getenv("_"));
+		     	_print(av[0]);
 			_print(": 1: ");
 			_print(command_table[0]);
 			_print(": not found\n");
-			errno = 127;
+			/*errno = 127;*/
 
 		     /*	perror(command_table[0]);*/
 			continue;
 		}
 
 	}
-	exit(errno);
-	return (0);
+	/*exit(errno);*/
+	exit(a);
 }
 
 /**

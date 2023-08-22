@@ -46,14 +46,13 @@ char **split_string(char *str, char *del)
 	if (str_cpy == NULL)
 	{
 		/*fail to copy */
-		return NULL;
+		return (NULL);
 	}
 	/*token = strtok(str_count, del);*/
 	token = strtok(str_cpy, del);
 	for (token_count = 0; token != NULL; token_count++)
 	{
 		token = strtok(NULL, del);
-		
 	}
 	/*free(str_count);*/
 	free(str_cpy);
@@ -61,14 +60,13 @@ char **split_string(char *str, char *del)
 	/* check for allocation failed */
 	if (buffer == NULL)
 		return (NULL);
-	
 	str_cpy = strdup(str);
 	token = strtok(str_cpy, del);
 
 	/* check if an empty command was entered */
 	if (token == NULL)
 	{
-		return NULL;
+		return (NULL);
 	}
 	buffer[j] = strdup(token);
 	if (buffer[j] == NULL)

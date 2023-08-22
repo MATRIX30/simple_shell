@@ -1,14 +1,14 @@
 #include "main.h"
 #define BUF_SIZE 1024
+int file_handler(char *filename);
 /**
 * file_handler - function to read and execute commands in files
-* @files: array of file names
+* @filename: array of file names
 * Return: 1 on success and 0 on failure
 */
 int file_handler(char *filename)
 {
 	char *prog_name = _getenv("_");
-	extern int errno;
 	ssize_t fd;
 	ssize_t read_size;
 	char *buffer = NULL;

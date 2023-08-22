@@ -4,7 +4,7 @@
 * @cmd: character pointer to commands entered
 * Return: 1 on success and o otherwise
 */
-
+int built_ins(char *cmd);
 int built_ins(char *cmd)
 {
 	/*extern char **environ;*/
@@ -31,12 +31,11 @@ int built_ins(char *cmd)
 		token = strtok(NULL, del);
 		if (token != NULL)
 		{
-			printf("%s\n",token);
-			status = atoi(token);
+			status = _atoi(token);
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
-			/*errno = 0;*/
+			errno = 0;
 			free(cmd_cpy);
 			exit(status);
 		}
@@ -54,7 +53,6 @@ int built_ins(char *cmd)
 		environ = en;
 		free(cmd_cpy);
 		return (1);
-	
 	}
 	free(cmd_cpy);
 	return (0);
