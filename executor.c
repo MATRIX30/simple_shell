@@ -3,14 +3,16 @@
 /**
 * executor - function to execute commands
 * @command_table: array of commands
-* Return: 1 on success and 0 otherwise
+* Return: 0 on success and 1 otherwise
 */
-
+int executor(char **command_table);
 int executor(char **command_table)
 {
-	extern int errno;
+
 	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
+       /*	int child_exit_code = 0;*/
+	int s = 0;
 
 	char *env[] = {NULL};
 
@@ -24,7 +26,7 @@ int executor(char **command_table)
 	{
 		/* incase of creation failure */
 		perror("fork");
-		exit(errno);
+		exit(EXIT_FAILURE);
 	}
 
 	if (child_id == 0)
@@ -33,8 +35,10 @@ int executor(char **command_table)
 		if (execve(command_table[0], command_table, env) == -1)
 		{
 			/* in case of failure */
-			perror(command_table[0]);
-			exit(0);
+			/*perror(command_table[0]);*/
+			/*exit(0);*/
+			s = errno;
+			exit(errno);
 		}
 
 	}
@@ -43,7 +47,19 @@ int executor(char **command_table)
 	{
 		/* specify task to perform in parent */
 		wait(&wstatus);
+	/*	if (WIFEXITED(wstatus))
+		{
+			child_exit_code = WEXITSTATUS(wstatus);
+			if (child_exit_code == 0)
+			{
+				printf("Success with %d\n", child_exit_code);
+			}
+			else
+			{
+				printf("Failure with %d\n", child_exit_code);
+			}
+		}*/
 	}
 
-	return (1);
+	exit(s);
 }
