@@ -7,6 +7,7 @@ void signal_handler(int __attribute__((unused)) sig);
 * main - main entry point to our shell program
 * @ac: argument count
 * @av: array of  string argumements passed to the shell
+* @env: environmental variables
 * Return: 0 on success 1 otherwise
 */
 int main(int  ac, char **av, char __attribute__((unused)) **env)
@@ -35,19 +36,15 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	 *    -std=gnu89 *.c -o hsh
 	 */
 
-	extern int errno;
+
 	char *lineptr = NULL;
 	char **command_table;
 	char *del = " \n";
 	size_t n = 0;
 	ssize_t char_read;
 	struct stat s;
-/*
-	char * cma_sep = NULL;
-	char * lineptr_cpy = NULL;
-	int count = 0;
-	char **cmd_table = NULL;
-*/
+	int a = 0;
+
 	/*char *comment_free_lineptr = NULL;*/
 	/*char *dirs = _getenv("PATH");*/
 
@@ -78,9 +75,6 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	/* register and handle signals here */
 	/*signal(SIGINT, signal_handler);*/
 
-
-
-
 	/* infinite loop to run shell */
 	while (1)
 	{
@@ -95,52 +89,16 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 			{
 				_putchar('\n');
 			}
-			/*free(lineptr);*/
+			free(lineptr);
 			exit(0);
-			/*exit(errno);*/
 		}
 
 		/**
 		* Handling comma seperated commands
 		*/
-
-		/*lineptr_cpy = strdup(lineptr);
-		cma_sep	= strtok(lineptr_cpy, ";");
-
-		while (cma_sep != NULL)
-		{
-			count++;
-			cma_sep = strtok(NULL, ";");
-		}
-		free(lineptr_cpy);
-		if (count >= 2)
-		{
-			lineptr_cpy = strdup(lineptr);
-			cma_sep = strtok(lineptr_cpy, ";");
-
-			while(cma_sep != NULL)
-			{
-				if (built_ins(cma_sep) == 1)
-				{
-					errno = 0;
-				}
-				else
-				{
-					cmd_table = split_string(cma_sep, del);
-					if (executor(cmd_table) == 1)
-					{
-						errno = 0;
-					}
-					else
-					{
-						perror("error");
-						errno = ENOENT;
-					}
-				}
-				cma_sep =strtok(NULL, ";");
-			}
-		}*/
-
+		/*if (comma_handler(lineptr) == 1)
+			continue;
+			*/
 		/**
 		* Handle Buit-ins here
 		* built_ins - function to execute build-in commands
@@ -148,10 +106,8 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		* Returns: 1 if successful ie command entered was a 
 		* built-in command and 0 otherwise
 		*/
-
 		if (built_ins(lineptr) == 1)
 		{
-			/*free(lineptr);*/
 			continue;
 		}
 
@@ -191,7 +147,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		/*verify if executable is in current working directory*/
 		if (stat(command_table[0], &s) == 0)
 		{
-			executor(command_table);
+			a = executor(command_table);
 			continue;
 		}
 		else if (handle_path(command_table) == 1)
@@ -201,13 +157,20 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		}
 		else
 		{
-			errno = ENOENT;
-			perror(command_table[0]);
+		     /*	errno = ENOENT;*/
+		     	_print(av[0]);
+			_print(": 1: ");
+			_print(command_table[0]);
+			_print(": not found\n");
+			/*errno = 127;*/
+
+		     /*	perror(command_table[0]);*/
 			continue;
 		}
 
 	}
-	return (0);
+	/*exit(errno);*/
+	exit(a);
 }
 
 /**
