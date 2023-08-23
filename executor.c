@@ -12,7 +12,7 @@ int executor(char **command_table)
 	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
        /*	int child_exit_code = 0;*/
-	int s = 0;
+	int exit_status = 0;
 
 	char *env[] = {NULL};
 
@@ -37,8 +37,7 @@ int executor(char **command_table)
 			/* in case of failure */
 			/*perror(command_table[0]);*/
 			/*exit(0);*/
-			s = errno;
-			exit(errno);
+			/*exit(0);*/
 		}
 
 	}
@@ -47,8 +46,11 @@ int executor(char **command_table)
 	{
 		/* specify task to perform in parent */
 		wait(&wstatus);
-	/*	if (WIFEXITED(wstatus))*/
+		if (WIFEXITED(wstatus))
+		{
+			exit_status = WEXITSTATUS(wstatus);
+		}
 	}
 
-	exit(s);
+	return (exit_status);
 }

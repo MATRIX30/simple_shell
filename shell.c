@@ -146,9 +146,12 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		if (stat(command_table[0], &s) == 0)
 		{
 			a = executor(command_table);
+			/*printf("This is that code %d\n",a);*/
 			continue;
+		
 		}
-		else if (handle_path(command_table) == 1)
+		a = handle_path(command_table);
+		if (a == 0)
 		{
 			/* look for executable in paths and execute */
 			continue;
@@ -156,10 +159,10 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		else
 		{
 		     /*	errno = ENOENT;*/
-		     _print(av[0]);
-		     _print(": 1: ");
-		     _print(command_table[0]);
-		     _print(": not found\n");
+		     _printerr(av[0]);
+		     _printerr(": 1: ");
+		     _printerr(command_table[0]);
+		     _printerr(": not found\n");
 		     /*errno = 127;*/
 
 		     /*	perror(command_table[0]);*/
@@ -168,7 +171,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 
 	}
 	/*exit(errno);*/
-	exit(a);
+	return(a);
 }
 
 /**
