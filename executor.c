@@ -38,8 +38,8 @@ int executor(char **command_table)
 			/* in case of failure */
 			/*perror(command_table[0]);*/
 			/*exit(0);*/
-			free(command_table);
-			exit(errno);
+			free_array(command_table);
+			exit(2);
 		}
 
 	}
@@ -53,7 +53,7 @@ int executor(char **command_table)
 			exit_status = WEXITSTATUS(wstatus);
 		}
 	}
-	free_array(command_table);
+	/*free_array(command_table);*/
 
 	return (exit_status);
 }

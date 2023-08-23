@@ -105,10 +105,10 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		* Returns: 1 if successful ie command entered was a
 		* built-in command and 0 otherwise
 		*/
-	
+
 		if (built_ins(lineptr) == 1)
 		{
-			free(lineptr);
+			/*free(lineptr);*/
 			continue;
 		}
 
@@ -133,6 +133,8 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		/* handling a Null command table */
 		if (command_table == NULL)
 		{
+			/*free(lineptr);*/
+			/*free_array(command_table);*/
 			continue;
 		}
 
@@ -146,33 +148,36 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		/*verify if executable is in current working directory*/
 		if (stat(command_table[0], &s) == 0)
 		{
+			/*free(lineptr);*/
 			a = executor(command_table);
 			/*printf("This is that code %d\n",a);*/
+			free_array(command_table);
 			continue;
-		
 		}
 		a = handle_path(command_table);
 		if (a == 0)
 		{
+			/*free_array(command_table);*/
+			/*free(lineptr);*/
 			/* look for executable in paths and execute */
 			continue;
 		}
 		else
 		{
-		     /*	errno = ENOENT;*/
-		     _printerr(av[0]);
-		     _printerr(": 1: ");
-		     _printerr(command_table[0]);
-		     _printerr(": not found\n");
-		     /*errno = 127;*/
-
-		     /*	perror(command_table[0]);*/
+			/*errno = ENOENT;*/
+			_printerr(av[0]);
+			_printerr(": 1: ");
+			_printerr(command_table[0]);
+			_printerr(": not found\n");
+			/*errno = 127;*/
+			free_array(command_table);
 			continue;
 		}
-
 	}
 	/*exit(errno);*/
-	return(errno);
+	free_array(command_table);
+	free(lineptr);
+	return (errno);
 }
 
 /**

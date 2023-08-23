@@ -8,12 +8,6 @@
 char **split_string(char *str, char *del);
 char **split_string(char *str, char *del)
 {
-	/**
-	* char *str must be an array of characters if its a string
-	* literal it will lead to a segmentation fault as strtok
-	* modifies str by inserting \0 character when ever it finds
-	* delimiters
-	*/
 
 	/**
 	*  make a copy of str by multiplying what ever its pointing to
@@ -31,10 +25,6 @@ char **split_string(char *str, char *del)
 	size_t token_count;
 	char *token = NULL;
 	size_t j = 0;
-
-	/*strcpy(str_cpy, str);*/
-	/*strcpy(str_count, str);*/
-	/*printf("%s\n",str_cpy);*/
 
 	if (str == NULL || del == NULL)
 	{
@@ -57,21 +47,23 @@ char **split_string(char *str, char *del)
 	}
 	/*free(str_count);*/
 	free(str_cpy);
-	buffer = malloc(sizeof(*buffer) * token_count);
+	buffer = malloc(sizeof(*buffer) * (token_count + 1));
 	/* check for allocation failed */
 	if (buffer == NULL)
 	{
-		free(buffer);
+		/*free(buffer);*/
 		return (NULL);
 	}
 	str_cpy = strdup(str);
+	/*free(str);*/
 	token = strtok(str_cpy, del);
 
 	/* check if an empty command was entered */
 	if (token == NULL)
 	{
-		free(buffer);
+		/*free(buffer);*/
 		/*break;*/
+		free(str_cpy);
 		return (NULL);
 	}
 	buffer[j] = strdup(token);
@@ -79,7 +71,8 @@ char **split_string(char *str, char *del)
 	{
 		_print("Error tokenizing");
 		/*free(buffer[j]);*/
-		free_array(buffer);
+		/*free_array(buffer);*/
+		free(str_cpy);
 		return (NULL);
 	}
 	for (j = 1; j < token_count; j++)
@@ -95,7 +88,7 @@ char **split_string(char *str, char *del)
 				free(buffer[j]);
 				j--;
 			}
-			free(buffer);
+			/*free(buffer);*/
 			free(str_cpy);
 			/*break;*/
 			return (NULL);

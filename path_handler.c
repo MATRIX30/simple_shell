@@ -35,7 +35,7 @@ int handle_path(char **command_table)
 	}
 	/*printf("%s\n",cur_dir);*/
 	paths_cpy = strdup(paths);
-	if (paths != NULL)
+	if (paths_cpy != NULL)
 	{
 		/*printf("%s\n",paths);*/
 		dir = strtok(paths_cpy, del);
@@ -59,16 +59,18 @@ int handle_path(char **command_table)
 				/*if (executor(command_table) != 1)*/
 
 				/*status = executor(command_table);*/
-				if (executor(command_table) != 0) 
+				if (executor(command_table) != 0)
 				{
 					perror("execution");
-					free(cur_dir);
+					/*free_array(command_table);*/
+					/*free(new_cmd);*/
 					free(paths_cpy);
-					return (errno);
+					return (0);
 				}
-				free(cur_dir);
+				/*free(cur_dir);*/
+				/*free_array(command_table);*/
 				free(paths_cpy);
-				return (errno);
+				return (0);
 			}
 
 			/*new_dir = getcwd(new_dir, dir_size);*/
@@ -76,11 +78,11 @@ int handle_path(char **command_table)
 			dir = strtok(NULL, del);
 		}
 	}
+	/*free_array(command_table);*/
 	chdir(cur_dir);
 	free(paths_cpy);
-	/*free(cur_dir);*/
 	/* change to the original directory before exiting */
-	return (errno);
+	return (1);
 }
 
 /* int main() {*/
