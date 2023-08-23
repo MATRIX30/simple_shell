@@ -35,7 +35,6 @@ int built_ins(char *cmd)
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
-			errno = 0;
 			free(cmd_cpy);
 			exit(status);
 		}
