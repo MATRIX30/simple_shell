@@ -1,2 +1,17 @@
-This is the official repository for our ALX_SWE simple shell project
+This is our official repository for our ALX_SWE simple shell project
 #Let's Do Hard Things
+
+This project is a simple implementation of a UNIX command line shell written
+in C. It provides basic functionality such as executing commands, handling
+input/output redirection and managing pipelines.
+
+Usage:
+To use the shell, compile the source code and run the resulting executable file in your terminal:
+
+$ gcc -Wall -Werror  -pedantic *.c -o hsh $ ./hsh
+
+Once the shell is running, you are able to enter commands like you would in a normal terminal.
+
+This shell was developed by the following contributors:
+
+Tekoh Achu and Isabelle Ohaga
