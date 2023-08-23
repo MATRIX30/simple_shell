@@ -83,12 +83,12 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 			_print("($) ");
-		char_read = _getline(&lineptr, &n, STDIN_FILENO);
+		char_read = getline(&lineptr, &n, stdin);
 		/* on getline failure return -1 */
 		if (char_read == -1)
 		{
 			/* test if EOF(ctrl + D) has been encountered */
-			if (isatty(STDIN_FILENO) == 0)
+			if (isatty(STDIN_FILENO) == 1)
 			{
 				_putchar('\n');
 			}
