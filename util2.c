@@ -121,7 +121,7 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 				return (len);
 			}
 		}
-		while (index < len && i < *n - 1 && buffer[ind] != '\n')
+		while (ind < len && i < *n - 1 && buffer[ind] != '\n')
 		{
 			stream[i++] = buffer[ind++];
 		}
