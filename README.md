@@ -1,5 +1,7 @@
-This is our official repository for our ALX_SWE simple shell project
+This is our official repository for our ALX SWE simple shell collaboration project
 #Let's Do Hard Things
+
+The project was completed using Betty linter, shell and C language
 
 This project is a simple implementation of a UNIX command line shell written
 in C. It provides basic functionality such as executing commands, handling
