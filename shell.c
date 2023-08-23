@@ -123,7 +123,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		* comment_free_lineptr = strtok(comment_free_lineptr, "#");
 		*/
 
-		/*lineptr = strtok(lineptr, "#");*/
+		lineptr = strtok(lineptr, "#");
 		/**
 		* Generate commands table from lineptr
 		* with the help of strtok tokenizing function
