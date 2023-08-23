@@ -8,7 +8,6 @@
 int executor(char **command_table);
 int executor(char **command_table)
 {
-	
 
 	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
@@ -18,7 +17,6 @@ int executor(char **command_table)
 	char *env[] = {NULL};
 
 	parent_id = getpid();
-	
 
 	/*printf("%d\n",parent_id);*/
 	/* creating child process */
