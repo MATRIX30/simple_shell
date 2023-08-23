@@ -15,7 +15,9 @@ int executor(char **command_table)
 	int exit_status = 0;
 
 	char *env[] = {NULL};
+	static int statu;
 
+	statu = 0;
 	parent_id = getpid();
 
 	/*printf("%d\n",parent_id);*/
@@ -38,9 +40,12 @@ int executor(char **command_table)
 			/* in case of failure */
 			/*perror(command_table[0]);*/
 			/*exit(0);*/
+			statu = 2;
+			errno = statu;
 			free_array(command_table);
-			exit(2);
+			exit(statu);
 		}
+		statu = 0;
 
 	}
 	else
@@ -51,9 +56,10 @@ int executor(char **command_table)
 		if (WIFEXITED(wstatus))
 		{
 			exit_status = WEXITSTATUS(wstatus);
+			statu = exit_status;
 		}
 	}
 	/*free_array(command_table);*/
 
-	return (exit_status);
+	return (statu);
 }

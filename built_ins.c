@@ -14,10 +14,15 @@ int built_ins(char *cmd)
 	char *token = NULL;
 
 	char **en = NULL;
+	static int statu;
+
+	statu = 0;
 
 	en = environ;
 	cmd_cpy = strdup(cmd);
 	token = strtok(cmd_cpy, del);
+
+
 
 	if (*environ == NULL)
 	{
@@ -34,7 +39,7 @@ int built_ins(char *cmd)
 		token = strtok(NULL, del);
 		if (token != NULL)
 		{
-			status = atoi(token);
+			status = _atoi(token);
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
@@ -44,7 +49,7 @@ int built_ins(char *cmd)
 		}
 		free(cmd);
 		free(cmd_cpy);
-		exit(0);
+		exit(statu);
 	}
 	else if (strcmp(token, "env") == 0)
 	{
@@ -59,5 +64,5 @@ int built_ins(char *cmd)
 		return (1);
 	}
 	free(cmd_cpy);
-	return (0);
+	return (statu);
 }

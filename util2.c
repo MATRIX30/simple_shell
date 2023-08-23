@@ -31,3 +31,45 @@ int _atoi(char *s)
 	}
 	return (number * sign);
 }
+
+/**
+ * _strtok - function to tokenize a string based on some delimiter
+ * @str: the string to tokenize
+ * @del: delimiter
+ * Return: token and null if emptpy
+*/
+char *_strtok(char *str, const char *del)
+{
+	static char *terminator;
+	char *start;
+
+	if (str != NULL)
+	{
+		terminator = str;
+	}
+	if (terminator == NULL)
+	{
+		return (NULL);
+	}
+
+	while (*terminator && strchr(del, *terminator))
+	{
+		terminator++;
+	}
+	if (*terminator == '\0')
+	{
+		return (NULL);
+	}
+
+	start = terminator;
+	while (*terminator && !strchr(del, *terminator))
+	{
+		terminator++;
+	}
+	if (*terminator)
+	{
+		*terminator = '\0';
+		terminator++;
+	}
+	return (start);
+}
