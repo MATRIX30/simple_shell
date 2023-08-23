@@ -38,7 +38,7 @@ int executor(char **command_table)
 			/* in case of failure */
 			/*perror(command_table[0]);*/
 			/*exit(0);*/
-			free(command_table);
+			free_array(command_table);
 			exit(errno);
 		}
 

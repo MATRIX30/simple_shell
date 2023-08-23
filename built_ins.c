@@ -44,7 +44,7 @@ int built_ins(char *cmd)
 		}
 		free(cmd);
 		free(cmd_cpy);
-		exit(2);
+		exit(0);
 	}
 	else if (strcmp(token, "env") == 0)
 	{

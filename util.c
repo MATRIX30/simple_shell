@@ -5,10 +5,12 @@
 */
 void free_array(char **arr)
 {
-	while (*arr)
+	int i = 0;
+
+	while (arr[i] != NULL)
 	{
-		free(*arr);
-		arr++;
+		free(arr[i]);
+		i++;
 	}
 	free(arr);
 }
