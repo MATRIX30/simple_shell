@@ -7,6 +7,8 @@ This project is a simple implementation of a UNIX command line shell written
 in C. It provides basic functionality such as executing commands, handling
 input/output redirection and managing pipelines.
 
+The shell works in both interactive and non-interactive mode.
+
 Usage:
 To use the shell, compile the source code and run the resulting executable file in your terminal:
 
