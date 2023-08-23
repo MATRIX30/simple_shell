@@ -7,6 +7,7 @@ This project is a simple implementation of a UNIX command line shell written
 in C. It provides basic functionality such as executing commands, handling
 input/output redirection and managing pipelines.
 
+
 The shell works in both interactive and non-interactive mode.
 
 Usage:
@@ -18,4 +19,4 @@ Once the shell is running, you are able to enter commands like you would in a no
 
 This shell was developed by the following contributors:
 
-Tekoh Achu and Isabelle Ohaga
+Tekoh Palma Achu and Isabelle Ohaga
