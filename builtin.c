@@ -12,7 +12,7 @@ int _myexit(info_t *info)
 int exit_code;
 
 /* check if an argument has been provided */
-if (!infi->argv[1])
+if (!info->argv[1])
 {
 info->err_num = _erratoi(info->argv[1]);
 return (-2);
