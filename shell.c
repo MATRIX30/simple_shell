@@ -1,12 +1,16 @@
 #include "main.h"
+#include <stdio.h>
+
+int main(int ac, char **av, char __attribute__((unused)) **env);
+void signal_handler(int __attribute__((unused)) sig);
 /**
 * main - main entry point to our shell program
 * @ac: argument count
 * @av: array of  string argumements passed to the shell
+* @env: environmental variables
 * Return: 0 on success 1 otherwise
 */
-int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av);
-int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
+int main(int  ac, char **av, char __attribute__((unused)) **env)
 {
 	/**
 	* Component based design of Shell
@@ -31,14 +35,18 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	 *  - Compilation flag: gcc -Wall -Werror -Wextra -pedantic
 	 *    -std=gnu89 *.c -o hsh
 	 */
+
+
 	char *lineptr = NULL;
 	char **command_table;
 	char *del = " \n";
 	size_t n = 0;
 	ssize_t char_read;
-	pid_t child;
-	/*pid_t father;*/
-	int status;
+	struct stat s;
+	int a = 0;
+
+	/*char *comment_free_lineptr = NULL;*/
+	/*char *dirs = _getenv("PATH");*/
 
 	/**
 	* 1) Lexical Analyzer: get commands from both interactive
@@ -49,32 +57,84 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 	* - Interactive shell design
 	*/
 
+
+	/* registration of signals */
+	signal(SIGINT, signal_handler);
+
+	/** handling entry of command from file **/
+	if (ac > 1)
+	{
+		/* file_handler code here*/
+		if (file_handler(av[1]) != 1)
+		{
+			exit(2);
+		}
+		exit(EXIT_SUCCESS);
+	}
+
+	/* register and handle signals here */
+	/*signal(SIGINT, signal_handler);*/
+
 	/* infinite loop to run shell */
 	while (1)
 	{
-		printf("($) ");
+		if (isatty(STDIN_FILENO) == 1)
+			_print("($) ");
 		char_read = getline(&lineptr, &n, stdin);
 		/* on getline failure return -1 */
 		if (char_read == -1)
 		{
 			/* test if EOF(ctrl + D) has been encountered */
-			/**
-			*if (feof(stdin))
-			* {
-			*	printf("\n");
-			*	_exit(0);
-			*
-			* }
-			*/
-			printf("\n");
-			_exit(1);
+			if (isatty(STDIN_FILENO) == 1)
+			{
+				_putchar('\n');
+			}
+			free(lineptr);
+			exit(0);
 		}
 
+		/**
+		* Handling comma seperated commands
+		*/
+		/*if (comma_handler(lineptr) == 1)*/
+			/*continue;*/
+		/**
+		* Handle Buit-ins here
+		* built_ins - function to execute build-in commands
+		* Takes typed commands throught lineptr
+		* Returns: 1 if successful ie command entered was a
+		* built-in command and 0 otherwise
+		*/
+	
+		if (built_ins(lineptr) == 1)
+		{
+			free(lineptr);
+			continue;
+		}
+
+		/**
+		* Handling comments # by spliting commands based on #
+		* and taking just the first part of the string
+		*/
+
+		/**
+		* comment_free_lineptr = strdup(lineptr);
+		* printf("%s\n",comment_free_lineptr);
+		* comment_free_lineptr = strtok(comment_free_lineptr, "#");
+		*/
+
+		lineptr = strtok(lineptr, "#");
 		/**
 		* Generate commands table from lineptr
 		* with the help of strtok tokenizing function
 		*/
 		command_table = split_string(lineptr, del);
+		/*free(lineptr);*/
+		/* handling a Null command table */
+		if (command_table == NULL)
+		{
+			continue;
+		}
 
 		/**
 		* 2) executor engine: This component makes use of
@@ -83,37 +143,44 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 		*    execute each command
 		*/
 
-		/*creat a seperate child process*/
-		child = fork();
-		if (child == -1)
+		/*verify if executable is in current working directory*/
+		if (stat(command_table[0], &s) == 0)
 		{
-			/* in case of failure in creating child process*/
-			perror("fork");
-			exit(EXIT_FAILURE);
+			a = executor(command_table);
+			/*printf("This is that code %d\n",a);*/
+			continue;
+		
 		}
-		if (child == 0)
+		a = handle_path(command_table);
+		if (a == 0)
 		{
-			/**
-			 *  task to perform while in child process
-			 *  printf("child process started\n");
-			 */
-			if (execve(command_table[0], command_table, NULL) == -1)
-			{
-				perror("./shell");
-				exit(EXIT_FAILURE);
-			}
+			/* look for executable in paths and execute */
+			continue;
 		}
 		else
 		{
-			/**
-			* task to perform while in parent process
-			* - wait for child process to finish continue
-			*   infinte looping
-			*/
-			wait(&status);
+		     /*	errno = ENOENT;*/
+		     _printerr(av[0]);
+		     _printerr(": 1: ");
+		     _printerr(command_table[0]);
+		     _printerr(": not found\n");
+		     /*errno = 127;*/
+
+		     /*	perror(command_table[0]);*/
+			continue;
 		}
 
 	}
-	free(lineptr);
-	return (0);
+	/*exit(errno);*/
+	return(errno);
+}
+
+/**
+* signal_handler - function to handle signals sent to the prompt
+* @sig: integer value send by signal
+*/
+
+void signal_handler(int __attribute__((unused)) sig)
+{
+	_print("\n($) ");
 }
