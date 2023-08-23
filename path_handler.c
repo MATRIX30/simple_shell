@@ -59,16 +59,16 @@ int handle_path(char **command_table)
 				/*if (executor(command_table) != 1)*/
 
 				/*status = executor(command_table);*/
-				if (executor(command_table) != 0) 
+				if (executor(command_table) != 0)
 				{
 					perror("execution");
-					free_array(command_table);
-					free(new_cmd);
+					/*free_array(command_table);*/
+					/*free(new_cmd);*/
 					free(paths_cpy);
 					return (0);
 				}
 				/*free(cur_dir);*/
-				free_array(command_table);
+				/*free_array(command_table);*/
 				free(paths_cpy);
 				return (0);
 			}
@@ -78,7 +78,7 @@ int handle_path(char **command_table)
 			dir = strtok(NULL, del);
 		}
 	}
-	free_array(command_table);
+	/*free_array(command_table);*/
 	chdir(cur_dir);
 	free(paths_cpy);
 	/* change to the original directory before exiting */

@@ -63,6 +63,7 @@ char **split_string(char *str, char *del)
 	{
 		/*free(buffer);*/
 		/*break;*/
+		free(str_cpy);
 		return (NULL);
 	}
 	buffer[j] = strdup(token);
@@ -71,6 +72,7 @@ char **split_string(char *str, char *del)
 		_print("Error tokenizing");
 		/*free(buffer[j]);*/
 		/*free_array(buffer);*/
+		free(str_cpy);
 		return (NULL);
 	}
 	for (j = 1; j < token_count; j++)

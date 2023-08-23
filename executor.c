@@ -8,6 +8,7 @@
 int executor(char **command_table);
 int executor(char **command_table)
 {
+	
 
 	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
@@ -17,6 +18,7 @@ int executor(char **command_table)
 	char *env[] = {NULL};
 
 	parent_id = getpid();
+	
 
 	/*printf("%d\n",parent_id);*/
 	/* creating child process */
@@ -39,7 +41,7 @@ int executor(char **command_table)
 			/*perror(command_table[0]);*/
 			/*exit(0);*/
 			free_array(command_table);
-			exit(errno);
+			exit(2);
 		}
 
 	}
@@ -53,7 +55,7 @@ int executor(char **command_table)
 			exit_status = WEXITSTATUS(wstatus);
 		}
 	}
-	free_array(command_table);
+	/*free_array(command_table);*/
 
 	return (exit_status);
 }
