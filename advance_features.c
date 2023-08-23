@@ -26,7 +26,7 @@ int comma_handler(char *lineptr)
 		cma_sep = strtok(NULL, del);
 	}
 
-	printf("%d\n",count);
+	/*printf("%d\n",count);*/
 	free(lineptr_cpy);
 	if (count > 2)
 	{
@@ -53,7 +53,7 @@ int comma_handler(char *lineptr)
 				cmd_table = split_string(cmds[j], del);
 				if (executor(cmd_table) == 1)
 				{
-					errno = 0;;
+					errno = 0;
 				}
 				else
 				{

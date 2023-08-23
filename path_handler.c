@@ -62,10 +62,8 @@ int handle_path(char **command_table)
 					free(paths_cpy);
 					return (0);
 				}
-				
 				free(cur_dir);
 				free(paths_cpy);
-				
 				return (1);
 			}
 
@@ -73,7 +71,7 @@ int handle_path(char **command_table)
 			/*printf("cur dir --> %s\n",new_dir);*/
 			dir = strtok(NULL, del);
 		}
-	} 
+	}
 	chdir(cur_dir);
 	free(paths_cpy);
 	/*free(cur_dir);*/
@@ -81,11 +79,8 @@ int handle_path(char **command_table)
 	return (0);
 }
 
-/*
-int main()
-{
-	char *command_table[] = {"ls","-la","/home/cyanide/workspace/alx/simple_shell",NULL}; 
-	handle_path(command_table);
-	return (0);
-}
-*/
+/* int main() {*/
+/*char *command_table[] = {"ls","-la","/home/cyanide/workspace/alx*/
+/*simple_shell",NULL}; */
+/*handle_path(command_table);*/
+/*	return (0); }*/

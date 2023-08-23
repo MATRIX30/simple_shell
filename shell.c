@@ -65,7 +65,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	if (ac > 1)
 	{
 		/* file_handler code here*/
-		if(file_handler(av[1]) != 1)
+		if (file_handler(av[1]) != 1)
 		{
 			exit(2);
 		}
@@ -96,18 +96,18 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		/**
 		* Handling comma seperated commands
 		*/
-		/*if (comma_handler(lineptr) == 1)
-			continue;
-			*/
+		/*if (comma_handler(lineptr) == 1)*/
+			/*continue;*/
 		/**
 		* Handle Buit-ins here
 		* built_ins - function to execute build-in commands
-		* Takes typed commands throught lineptr 
-		* Returns: 1 if successful ie command entered was a 
+		* Takes typed commands throught lineptr
+		* Returns: 1 if successful ie command entered was a
 		* built-in command and 0 otherwise
 		*/
 		if (built_ins(lineptr) == 1)
 		{
+			free(lineptr);
 			continue;
 		}
 
@@ -116,21 +116,19 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		* and taking just the first part of the string
 		*/
 
-		/*comment_free_lineptr = strdup(lineptr);
-		printf("%s\n",comment_free_lineptr);
-		comment_free_lineptr = strtok(comment_free_lineptr, "#");*/
+		/**
+		* comment_free_lineptr = strdup(lineptr);
+		* printf("%s\n",comment_free_lineptr);
+		* comment_free_lineptr = strtok(comment_free_lineptr, "#");
+		*/
 
 		lineptr = strtok(lineptr, "#");
 		/**
 		* Generate commands table from lineptr
 		* with the help of strtok tokenizing function
 		*/
-	
 		command_table = split_string(lineptr, del);
-		
 		/*free(lineptr);*/
-	
-
 		/* handling a Null command table */
 		if (command_table == NULL)
 		{
@@ -158,11 +156,11 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		else
 		{
 		     /*	errno = ENOENT;*/
-		     	_print(av[0]);
-			_print(": 1: ");
-			_print(command_table[0]);
-			_print(": not found\n");
-			/*errno = 127;*/
+		     _print(av[0]);
+		     _print(": 1: ");
+		     _print(command_table[0]);
+		     _print(": not found\n");
+		     /*errno = 127;*/
 
 		     /*	perror(command_table[0]);*/
 			continue;

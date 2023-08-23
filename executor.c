@@ -47,18 +47,7 @@ int executor(char **command_table)
 	{
 		/* specify task to perform in parent */
 		wait(&wstatus);
-	/*	if (WIFEXITED(wstatus))
-		{
-			child_exit_code = WEXITSTATUS(wstatus);
-			if (child_exit_code == 0)
-			{
-				printf("Success with %d\n", child_exit_code);
-			}
-			else
-			{
-				printf("Failure with %d\n", child_exit_code);
-			}
-		}*/
+	/*	if (WIFEXITED(wstatus))*/
 	}
 
 	exit(s);
