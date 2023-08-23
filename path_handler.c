@@ -20,7 +20,7 @@ int handle_path(char **command_table)
 	/*char *new_dir = NULL;*/
 	struct stat s;
 	char *new_cmd;
-	int status = 0;
+	/*int status = 0;*/
 
 	cur_dir = getcwd(cur_dir, dir_size);
 	/*printf("%s\n",paths);*/
@@ -58,17 +58,17 @@ int handle_path(char **command_table)
 				/*if (execve(command_table[0], command_table, NULL)== -1)*/
 				/*if (executor(command_table) != 1)*/
 
-				status = executor(command_table);
-				/*if (executor(command_table) != 1) 
+				/*status = executor(command_table);*/
+				if (executor(command_table) != 0) 
 				{
 					perror("execution");
 					free(cur_dir);
 					free(paths_cpy);
-					return (0);
-				}*/
+					return (errno);
+				}
 				free(cur_dir);
 				free(paths_cpy);
-				return (status);
+				return (errno);
 			}
 
 			/*new_dir = getcwd(new_dir, dir_size);*/
@@ -80,7 +80,7 @@ int handle_path(char **command_table)
 	free(paths_cpy);
 	/*free(cur_dir);*/
 	/* change to the original directory before exiting */
-	return (status);
+	return (errno);
 }
 
 /* int main() {*/

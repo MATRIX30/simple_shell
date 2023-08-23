@@ -8,7 +8,7 @@ int built_ins(char *cmd);
 int built_ins(char *cmd)
 {
 	/*extern char **environ;*/
-	/*int status;*/
+	int status;
 	char *del = " \n";
 	char *cmd_cpy = NULL;
 	char *token = NULL;
@@ -31,19 +31,20 @@ int built_ins(char *cmd)
 	}
 	if (strcmp(token, "exit") == 0)
 	{
-		/*token = strtok(NULL, del);
+		token = strtok(NULL, del);
 		if (token != NULL)
-		{*/
-			/*status = atoi(token);*/
+		{
+			status = atoi(token);
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
-			/*free(cmd_cpy);*/
-			/*exit(status);*/
-		/*}*/
+			free(cmd_cpy);
+			free(cmd);
+			exit(status);
+		}
 		free(cmd);
 		free(cmd_cpy);
-		exit(0);
+		exit(2);
 	}
 	else if (strcmp(token, "env") == 0)
 	{

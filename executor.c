@@ -26,6 +26,7 @@ int executor(char **command_table)
 	{
 		/* incase of creation failure */
 		perror("fork");
+		free_array(command_table);
 		exit(EXIT_FAILURE);
 	}
 
@@ -37,7 +38,8 @@ int executor(char **command_table)
 			/* in case of failure */
 			/*perror(command_table[0]);*/
 			/*exit(0);*/
-			/*exit(0);*/
+			free(command_table);
+			exit(errno);
 		}
 
 	}
@@ -51,6 +53,7 @@ int executor(char **command_table)
 			exit_status = WEXITSTATUS(wstatus);
 		}
 	}
+	free_array(command_table);
 
 	return (exit_status);
 }

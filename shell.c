@@ -172,7 +172,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 
 	}
 	/*exit(errno);*/
-	return(a);
+	return(errno);
 }
 
 /**

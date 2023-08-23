@@ -46,6 +46,7 @@ char **split_string(char *str, char *del)
 	if (str_cpy == NULL)
 	{
 		/*fail to copy */
+		free(str_cpy);
 		return (NULL);
 	}
 	/*token = strtok(str_count, del);*/
@@ -59,20 +60,27 @@ char **split_string(char *str, char *del)
 	buffer = malloc(sizeof(*buffer) * token_count);
 	/* check for allocation failed */
 	if (buffer == NULL)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	str_cpy = strdup(str);
 	token = strtok(str_cpy, del);
 
 	/* check if an empty command was entered */
 	if (token == NULL)
 	{
+		free(buffer);
+		/*break;*/
 		return (NULL);
 	}
 	buffer[j] = strdup(token);
 	if (buffer[j] == NULL)
 	{
 		_print("Error tokenizing");
-		exit(0);
+		/*free(buffer[j]);*/
+		free_array(buffer);
+		return (NULL);
 	}
 	for (j = 1; j < token_count; j++)
 	{
@@ -89,7 +97,8 @@ char **split_string(char *str, char *del)
 			}
 			free(buffer);
 			free(str_cpy);
-			break;
+			/*break;*/
+			return (NULL);
 		}
 	}
 	buffer[j] = NULL;

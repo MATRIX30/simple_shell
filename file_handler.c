@@ -74,9 +74,9 @@ int file_handler(char *filename)
 		cmd_list++;
 	}
 	free(buff_cpy);
-	/*free_array(cmd_list);*/
+	free_array(cmd_list);
 	free(buffer);
-
+	free_array(cmd_table);
 	close(fd);
 	return (1);
 }
