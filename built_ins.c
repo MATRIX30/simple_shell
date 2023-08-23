@@ -31,7 +31,7 @@ int built_ins(char *cmd)
 		token = strtok(NULL, del);
 		if (token != NULL)
 		{
-			status = _atoi(token);
+			status = atoi(token);
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
