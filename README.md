@@ -6,9 +6,8 @@ This is our official repository for our ALX SWE simple shell collaboration proje
 The project was completed using Betty linter, shell and C language
 
 This project is a simple implementation of a UNIX command line shell written
-in C. It provides basic functionality such as executing commands, handling
+in the C language. It provides basic functionality such as executing commands, handling
 input/output redirection and managing pipelines.
-
 
 The shell works in both interactive and non-interactive mode.
 
