@@ -51,7 +51,8 @@ char **split_string(char *str, char *del)
 	/* check for allocation failed */
 	if (buffer == NULL)
 	{
-		/*free(buffer);*/
+		/* latest memory leak fix*/
+		free_array(buffer);
 		return (NULL);
 	}
 	str_cpy = strdup(str);
@@ -61,7 +62,7 @@ char **split_string(char *str, char *del)
 	/* check if an empty command was entered */
 	if (token == NULL)
 	{
-		/*free(buffer);*/
+		free_array(buffer);
 		/*break;*/
 		free(str_cpy);
 		return (NULL);
@@ -70,8 +71,7 @@ char **split_string(char *str, char *del)
 	if (buffer[j] == NULL)
 	{
 		_print("Error tokenizing");
-		/*free(buffer[j]);*/
-		/*free_array(buffer);*/
+		free_array(buffer);
 		free(str_cpy);
 		return (NULL);
 	}

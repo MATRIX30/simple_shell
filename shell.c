@@ -136,6 +136,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 		/* handling a Null command table */
 		if (command_table == NULL)
 		{
+			free(command_table);
 			/*free(lineptr);*/
 			/*free_array(command_table);*/
 			continue;
