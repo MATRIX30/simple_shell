@@ -1,6 +1,5 @@
 ALX SIMPLE SHELL COLLABORATIVE TEAM PROJECT
 
-
 This is our official repository for our ALX SWE simple shell collaboration project
 #Let's Do Hard Things
 
@@ -18,7 +17,7 @@ To use the shell, compile the source code and run the resulting executable file 
 
 $ gcc -Wall -Werror  -pedantic *.c -o hsh $ ./hsh
 
-Once the shell is running, you are able to enter commands like you would in a normal terminal.
+Once the shell is running, the user is able to enter commands like you would in a normal terminal.
 
 This shell was developed by the following contributors:
 
