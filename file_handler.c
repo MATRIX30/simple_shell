@@ -22,7 +22,6 @@ int file_handler(char *filename)
 	char **cmd_list = NULL;
 	int i = 0;
 
-	buffer = malloc(sizeof(char) * BUF_SIZE);
 	if (filename == NULL)
 	{
 		return (0);
@@ -34,14 +33,20 @@ int file_handler(char *filename)
 		_printerr(": 0: cannot open ");
 		_printerr(filename);
 		_printerr(": No such file\n");
-		free(buffer);
+	       /*free(buffer);*/
 		/*free(prog_name);*/
 		return (0);
 	}
-
+	buffer = malloc(sizeof(char) * BUF_SIZE);
 	read_size = read(fd, buffer, BUF_SIZE);
 	if (read_size == -1)
 	{
+		free(buffer);
+		return (0);
+	}
+	if (read_size == 0)
+	{
+		free(buffer);
 		return (0);
 	}
 	if (buffer == NULL)
@@ -76,7 +81,6 @@ int file_handler(char *filename)
 	free(buff_cpy);
 	free_array(cmd_list);
 	free(buffer);
-	free_array(cmd_table);
 	close(fd);
 	return (1);
 }

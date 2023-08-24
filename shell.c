@@ -44,6 +44,9 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	ssize_t char_read;
 	struct stat s;
 	int a = 0;
+	static int statu;
+
+	statu = 0;
 
 	/*char *comment_free_lineptr = NULL;*/
 	/*char *dirs = _getenv("PATH");*/
@@ -90,7 +93,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 				_putchar('\n');
 			}
 			free(lineptr);
-			exit(0);
+			exit(statu);
 		}
 
 		/**
@@ -155,6 +158,8 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 			continue;
 		}
 		a = handle_path(command_table);
+		/** be careful */
+		/* free_array(command_table);*/
 		if (a == 0)
 		{
 			/*free_array(command_table);*/
@@ -170,6 +175,8 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 			_printerr(command_table[0]);
 			_printerr(": not found\n");
 			/*errno = 127;*/
+			statu = 127;
+			errno = statu;
 			free_array(command_table);
 			continue;
 		}
@@ -177,7 +184,7 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 	/*exit(errno);*/
 	free_array(command_table);
 	free(lineptr);
-	return (errno);
+	return (statu);
 }
 
 /**

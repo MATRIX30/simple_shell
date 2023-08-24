@@ -13,11 +13,19 @@ int built_ins(char *cmd)
 	char *cmd_cpy = NULL;
 	char *token = NULL;
 
+	char *path;
+	char *cwd = NULL;
+
 	char **en = NULL;
+	static int statu;
+
+	statu = 0;
 
 	en = environ;
 	cmd_cpy = strdup(cmd);
 	token = strtok(cmd_cpy, del);
+
+
 
 	if (*environ == NULL)
 	{
@@ -34,7 +42,7 @@ int built_ins(char *cmd)
 		token = strtok(NULL, del);
 		if (token != NULL)
 		{
-			status = atoi(token);
+			status = _atoi(token);
 			/* implement logic to test token for the folowng*/
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
@@ -44,7 +52,7 @@ int built_ins(char *cmd)
 		}
 		free(cmd);
 		free(cmd_cpy);
-		exit(0);
+		exit(statu);
 	}
 	else if (strcmp(token, "env") == 0)
 	{
@@ -59,5 +67,33 @@ int built_ins(char *cmd)
 		return (1);
 	}
 	free(cmd_cpy);
-	return (0);
+	if (strcmp(token, "cd") == 0)
+	{
+		path = strtok(NULL, del);
+		if (path == NULL)
+		{
+			return (chdir(getenv("HOME")) + 1);
+		}
+		else if (strcmp(path, "-") == 0)
+		{
+			path = getenv("OLDPWD");
+			if (path == NULL)
+			{
+				_printerr("path null");
+			}
+			else
+			{
+				cwd = getcwd(cwd, 1024);
+				_print(path);
+				setenv("OLDPWD", cwd, 1);
+				setenv("PWD", path, 1);
+				return (chdir(path) + 1);
+			}
+		}
+		else
+		{
+			return (chdir(path) + 1);
+		}
+	}
+	return (statu);
 }

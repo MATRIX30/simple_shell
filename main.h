@@ -32,9 +32,10 @@ char *_getenv1(const char *name);
 /* builtin functions */
 int built_ins(char *cmd);
 int _atoi(char *s);
+char *_strtok(char *str, const char *del);
+ssize_t _getline(char **lineptr, size_t *n, int fd);
 /* signal handling functions */
 void signal_handler(int sig);
-
 
 /* string methods */
 char *_strcat(char *dest, char *src);
