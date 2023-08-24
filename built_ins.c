@@ -7,7 +7,6 @@
 int built_ins(char *cmd);
 int built_ins(char *cmd)
 {
-	/*extern char **environ;*/
 	int status;
 	char *del = " \n";
 	char *cmd_cpy = NULL;
@@ -48,6 +47,9 @@ int built_ins(char *cmd)
 				_printerr("\n");
 				statu = 2;
 				errno = 2;
+
+				free(cmd_cpy);
+				free(cmd); 
 				exit(statu);
 			}
 			/* - when token cotains no digits  ie string*/

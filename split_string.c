@@ -25,7 +25,6 @@ char **split_string(char *str, char *del)
 	size_t token_count;
 	char *token = NULL;
 	size_t j = 0;
-	
 
 
 	if (str == NULL || del == NULL)
@@ -55,7 +54,8 @@ char **split_string(char *str, char *del)
 	{
 		/* latest memory leak fix*/
 		/*buffer = strdup(str_cpy);*/
-	        free_array(buffer);
+	       /* free_array(buffer);*/
+	       free(buffer);
 		return (NULL);
 	}
 	str_cpy = strdup(str);
@@ -92,7 +92,7 @@ char **split_string(char *str, char *del)
 				free(buffer[j]);
 				j--;
 			}
-			/*free(buffer);*/
+			free(buffer);
 			free(str_cpy);
 			/*break;*/
 			return (NULL);
