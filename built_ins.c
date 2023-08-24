@@ -13,9 +13,6 @@ int built_ins(char *cmd)
 	char *cmd_cpy = NULL;
 	char *token = NULL;
 
-	char *path;
-	char *cwd = NULL;
-
 	char **en = NULL;
 	static int statu;
 
@@ -67,33 +64,5 @@ int built_ins(char *cmd)
 		return (1);
 	}
 	free(cmd_cpy);
-	if (strcmp(token, "cd") == 0)
-	{
-		path = strtok(NULL, del);
-		if (path == NULL)
-		{
-			return (chdir(getenv("HOME")) + 1);
-		}
-		else if (strcmp(path, "-") == 0)
-		{
-			path = getenv("OLDPWD");
-			if (path == NULL)
-			{
-				_printerr("path null");
-			}
-			else
-			{
-				cwd = getcwd(cwd, 1024);
-				_print(path);
-				setenv("OLDPWD", cwd, 1);
-				setenv("PWD", path, 1);
-				return (chdir(path) + 1);
-			}
-		}
-		else
-		{
-			return (chdir(path) + 1);
-		}
-	}
 	return (statu);
 }
