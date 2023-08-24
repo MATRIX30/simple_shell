@@ -25,6 +25,8 @@ char **split_string(char *str, char *del)
 	size_t token_count;
 	char *token = NULL;
 	size_t j = 0;
+	
+
 
 	if (str == NULL || del == NULL)
 	{
@@ -52,7 +54,8 @@ char **split_string(char *str, char *del)
 	if (buffer == NULL)
 	{
 		/* latest memory leak fix*/
-		free_array(buffer);
+		/*buffer = strdup(str_cpy);*/
+	        free_array(buffer);
 		return (NULL);
 	}
 	str_cpy = strdup(str);
@@ -62,7 +65,8 @@ char **split_string(char *str, char *del)
 	/* check if an empty command was entered */
 	if (token == NULL)
 	{
-		free_array(buffer);
+		/*buffer = strdup(str_cpy);*/
+		free(buffer);
 		/*break;*/
 		free(str_cpy);
 		return (NULL);
