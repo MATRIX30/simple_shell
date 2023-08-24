@@ -12,7 +12,7 @@ int executor(char **command_table)
 	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
        /*	int child_exit_code = 0;*/
-	int exit_status = 0;
+       int exit_status = 0;
 
 	char *env[] = {NULL};
 	static int statu;
@@ -56,7 +56,10 @@ int executor(char **command_table)
 		if (WIFEXITED(wstatus))
 		{
 			exit_status = WEXITSTATUS(wstatus);
-			statu = exit_status;
+			statu = 2;
+			errno = exit_status;
+			/*exit_status = statu;*/
+			errno = 2;
 		}
 	}
 	/*free_array(command_table);*/

@@ -39,8 +39,17 @@ int built_ins(char *cmd)
 		token = strtok(NULL, del);
 		if (token != NULL)
 		{
-			status = _atoi(token);
+			status = atoi(token);
 			/* implement logic to test token for the folowng*/
+			if (atoi(token) == 0 || atoi(token) < 0)
+			{
+				_printerr("./hsh: 1: exit: Illegal number: ");
+				_printerr(token);
+				_printerr("\n");
+				statu = 2;
+				errno = 2;
+				exit(statu);
+			}
 			/* - when token cotains no digits  ie string*/
 			/* - when token is negative */
 			free(cmd_cpy);

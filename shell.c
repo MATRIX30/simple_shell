@@ -165,6 +165,8 @@ int main(int  ac, char **av, char __attribute__((unused)) **env)
 			/*free_array(command_table);*/
 			/*free(lineptr);*/
 			/* look for executable in paths and execute */
+			statu = 2;
+			errno = statu;
 			continue;
 		}
 		else
