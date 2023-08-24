@@ -1,4 +1,4 @@
-ALX SIMPLE SHELL COLLABORATIVE TEAM PROJECT
+ALX SWE SIMPLE SHELL COLLABORATIVE TEAM PROJECT
 
 This is our official repository for our ALX SWE simple shell collaboration project
 #Let's Do Hard Things
