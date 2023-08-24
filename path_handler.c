@@ -30,7 +30,7 @@ int handle_path(char **command_table)
 
 	if (paths == NULL)
 	{
-		/*free(cur_dir);*/
+		free(cur_dir);
 		return (0);
 	}
 	/*printf("%s\n",cur_dir);*/
@@ -64,10 +64,11 @@ int handle_path(char **command_table)
 					perror("execution");
 					/*free_array(command_table);*/
 					/*free(new_cmd);*/
+					free(cur_dir);
 					free(paths_cpy);
 					return (0);
 				}
-				/*free(cur_dir);*/
+				free(cur_dir);
 				/*free_array(command_table);*/
 				free(paths_cpy);
 				return (0);
@@ -81,6 +82,7 @@ int handle_path(char **command_table)
 	/*free_array(command_table);*/
 	chdir(cur_dir);
 	free(paths_cpy);
+	free(cur_dir);
 	/* change to the original directory before exiting */
 	return (1);
 }
