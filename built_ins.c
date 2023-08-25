@@ -40,7 +40,7 @@ int built_ins(char *cmd)
 		{
 			status = atoi(token);
 			/* implement logic to test token for the folowng*/
-			if (atoi(token) == 0 || atoi(token) < 0)
+			if (status == 0 || atoi(token) < 0)
 			{
 				_printerr("./hsh: 1: exit: Illegal number: ");
 				_printerr(token);
@@ -56,7 +56,11 @@ int built_ins(char *cmd)
 			/* - when token is negative */
 			free(cmd_cpy);
 			free(cmd);
-			exit(status);
+			exit(statu);
+		}
+		if (errno == 127)
+		{
+			statu = 2;
 		}
 		free(cmd);
 		free(cmd_cpy);
@@ -73,6 +77,11 @@ int built_ins(char *cmd)
 		environ = en;
 		free(cmd_cpy);
 		return (1);
+	}
+	else if (strcmp(token, "cd") == 0)
+	{
+		token = strtok(NULL, del);
+
 	}
 	free(cmd_cpy);
 	return (statu);

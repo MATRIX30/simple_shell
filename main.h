@@ -13,6 +13,7 @@
 #include <ctype.h>
 extern char **environ;
 extern int errno;
+
 char **split_string(char *str, char *del);
 int handle_path(char **command_table);
 int file_handler(char *filename);

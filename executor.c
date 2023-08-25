@@ -17,6 +17,7 @@ int executor(char **command_table)
 	char *env[] = {NULL};
 	static int statu;
 
+
 	statu = 0;
 	parent_id = getpid();
 
