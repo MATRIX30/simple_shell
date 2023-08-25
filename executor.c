@@ -11,8 +11,8 @@ int executor(char **command_table)
 
 	pid_t __attribute__((unused))parent_id, child_id;
 	int wstatus;
-       /*	int child_exit_code = 0;*/
-       int exit_status = 0;
+	/*	int child_exit_code = 0;*/
+	int exit_status = 0;
 
 	char *env[] = {NULL};
 	static int statu;

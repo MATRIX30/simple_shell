@@ -49,7 +49,7 @@ int built_ins(char *cmd)
 				errno = 2;
 
 				free(cmd_cpy);
-				free(cmd); 
+				free(cmd);
 				exit(statu);
 			}
 			/* - when token cotains no digits  ie string*/

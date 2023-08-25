@@ -54,8 +54,8 @@ char **split_string(char *str, char *del)
 	{
 		/* latest memory leak fix*/
 		/*buffer = strdup(str_cpy);*/
-	       /* free_array(buffer);*/
-	       free(buffer);
+		/* free_array(buffer);*/
+		free(buffer);
 		return (NULL);
 	}
 	str_cpy = strdup(str);
